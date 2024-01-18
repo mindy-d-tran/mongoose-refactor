@@ -6,7 +6,7 @@ import Grade from '../models/grades.js';
 const router = express.Router();
 
 router.get('/', async (req,res)=>{
-  const grades = await Grade.find({});
+  const grades = await Grade.find({}).limit(5);
   res.status(200).json(grades);
 })
 // Create a single grade entry
