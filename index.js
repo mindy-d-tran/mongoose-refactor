@@ -1,10 +1,11 @@
-import express from "express";
 import "./localenv.js";
-
-const PORT = process.env.PORT || 3000;
-const app = express();
+import {conn} from './db/conn.js';conn();
+import express from "express";
 
 import grades from "./routes/grades.js";
+
+const app = express();
+const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
 
