@@ -13,7 +13,7 @@ app.get("/", (req, res) => {
   res.send("Welcome to the API.");
 });
 
-app.use("/grades", grades);
+app.use("/api/grades", grades);
 
 // Global error handling
 app.use((err, _req, res, next) => {
