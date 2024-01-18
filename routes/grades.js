@@ -1,7 +1,6 @@
 import express from "express";
 import Grade from "../models/grades.js";
-// import { ObjectId } from "mongodb";
-// import db from "../db/conn.js";
+
 
 const router = express.Router();
 
@@ -19,7 +18,6 @@ router.post("/", async (req, res) => {
     delete newDocument.student_id;
   }
 
-  // const result = await collection.insertOne(newDocument);
   const result = await Grade.create(newDocument);
   res.send(result).status(204);
 });
