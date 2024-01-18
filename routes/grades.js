@@ -1,20 +1,20 @@
 import express from "express";
-import Grade from '../models/grades.js';
+import Grade from "../models/grades.js";
 // import { ObjectId } from "mongodb";
 // import db from "../db/conn.js";
 
 const router = express.Router();
 
-router.get('/', async (req,res)=>{
+router.get("/", async (req, res) => {
   const grades = await Grade.find({}).limit(5);
   res.status(200).json(grades);
-})
+});
 // Create a single grade entry
 router.post("/", async (req, res) => {
   const newDoc = new Grade({
     scores: [req.body.scores],
     class_id: req.body.class_id,
-    learner_id: req.body.learner_id || req.body.student_id
+    learner_id: req.body.learner_id || req.body.student_id,
   });
 
   let result = await newDoc.save();
@@ -36,7 +36,7 @@ router.post("/", async (req, res) => {
 // Get a single grade entry
 router.get("/:id", async (req, res) => {
   try {
-    let result = await Learner.findById(req.params.id);
+    let result = await Grade.findById(req.params.id);
     res.send(result);
   } catch {
     res.send("Invalid ID").status(400);
@@ -49,18 +49,28 @@ router.get("/:id", async (req, res) => {
   // else res.send(result).status(200);
 });
 
-// // Add a score to a grade entry
-// router.patch("/:id/add", async (req, res) => {
-//   let collection = await db.collection("grades");
-//   let query = { _id: ObjectId(req.params.id) };
+// Add a score to a grade entry
+router.patch("/:id/add", async (req, res) => {
+  let query = { _id: req.params.id };
 
-//   let result = await collection.updateOne(query, {
-//     $push: { scores: req.body }
-//   });
+  try {
+    let result = await Grade.updateOne(query, {
+      $push: { scores: req.body },
+    });
+    res.send(result);
+  } catch {
+    res.send("Invalid ID").status(400);
+  }
+  // let collection = await db.collection("grades");
+  // let query = { _id: ObjectId(req.params.id) };
 
-//   if (!result) res.send("Not found").status(404);
-//   else res.send(result).status(200);
-// });
+  // let result = await collection.updateOne(query, {
+  //   $push: { scores: req.body }
+  // });
+
+  // if (!result) res.send("Not found").status(404);
+  // else res.send(result).status(200);
+});
 
 // // Remove a score from a grade entry
 // router.patch("/:id/remove", async (req, res) => {
@@ -94,7 +104,7 @@ router.get("/:id", async (req, res) => {
 // router.get("/learner/:id", async (req, res) => {
 //   let collection = await db.collection("grades");
 //   let query = { learner_id: Number(req.params.id) };
-  
+
 //   // Check for class_id parameter
 //   if (req.query.class) query.class_id = Number(req.query.class);
 
@@ -152,7 +162,6 @@ router.get("/:id", async (req, res) => {
 //   if (!result) res.send("Not found").status(404);
 //   else res.send(result).status(200);
 // });
-
 
 // router.get("/", async (req, res) => {
 //   let collection = await db.collection("grades");
