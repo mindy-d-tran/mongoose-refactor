@@ -11,6 +11,19 @@ router.get('/', async (req,res)=>{
 })
 // Create a single grade entry
 router.post("/", async (req, res) => {
+  const newDoc = new Grade({
+    scores: [req.body.scores],
+    class_id: req.body.class_id,
+    learner_id: req.body.learner_id || req.body.student_id
+  });
+  // // rename fields for backwards compatibility
+  // if (newDoc.student_id) {
+  //   newDoc.learner_id = newDoc.student_id;
+  //   delete newDoc.student_id;
+  // }
+
+  let result = await newDoc.save();
+  res.send(result).status(204);
 
   // let collection = await db.collection("grades");
   // let newDocument = req.body;
