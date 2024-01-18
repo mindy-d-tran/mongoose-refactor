@@ -56,15 +56,6 @@ router.patch("/:id/remove", async (req, res) => {
   } catch {
     res.send("Invalid Grade ID").status(400);
   }
-  // let collection = await db.collection("grades");
-  // let query = { _id: ObjectId(req.params.id) };
-
-  // let result = await collection.updateOne(query, {
-  //   $pull: { scores: req.body }
-  // });
-
-  // if (!result) res.send("Not found").status(404);
-  // else res.send(result).status(200);
 });
 
 // Delete a single grade entry
@@ -94,16 +85,22 @@ router.get("/learner/:id", async (req, res) => {
   }
 });
 
-// // Delete a learner's grade data
-// router.delete("/learner/:id", async (req, res) => {
-//   let collection = await db.collection("grades");
-//   let query = { learner_id: Number(req.params.id) };
+// Delete a learner's grade data
+router.delete("/learner/:id", async (req, res) => {
+  try {
+    let result = await Grade.deleteOne({ learner_id: Number(req.params.id) });
+    res.send(result);
+  } catch {
+    res.send("Invalid Learner ID").status(400);
+  }
+  // let collection = await db.collection("grades");
+  // let query = { learner_id: Number(req.params.id) };
 
-//   let result = await collection.deleteOne(query);
+  // let result = await collection.deleteOne(query);
 
-//   if (!result) res.send("Not found").status(404);
-//   else res.send(result).status(200);
-// });
+  // if (!result) res.send("Not found").status(404);
+  // else res.send(result).status(200);
+});
 
 // Get a class's grade data
 router.get("/class/:id", async (req, res) => {
