@@ -11,6 +11,6 @@ const gradesSchema = new mongoose.Schema({
         type: Number,
         required: true
     }
-})
+}, {collection: 'grades'})
 
 export default mongoose.model('Grade', gradesSchema)
