@@ -61,15 +61,6 @@ router.patch("/:id/add", async (req, res) => {
   } catch {
     res.send("Invalid ID").status(400);
   }
-  // let collection = await db.collection("grades");
-  // let query = { _id: ObjectId(req.params.id) };
-
-  // let result = await collection.updateOne(query, {
-  //   $push: { scores: req.body }
-  // });
-
-  // if (!result) res.send("Not found").status(404);
-  // else res.send(result).status(200);
 });
 
 // // Remove a score from a grade entry
@@ -95,24 +86,30 @@ router.patch("/:id/add", async (req, res) => {
 //   else res.send(result).status(200);
 // });
 
-// // Get route for backwards compatibility
-// router.get("/student/:id", async (req, res) => {
-//   res.redirect(`learner/${req.params.id}`);
-// });
+// Get route for backwards compatibility
+router.get("/student/:id", async (req, res) => {
+  res.redirect(`/api/grades/learner/${req.params.id}`);
+});
 
-// // Get a learner's grade data
-// router.get("/learner/:id", async (req, res) => {
-//   let collection = await db.collection("grades");
-//   let query = { learner_id: Number(req.params.id) };
+// Get a learner's grade data
+router.get("/learner/:id", async (req, res) => {
+  try {
+    let result = await Grade.find({learner_id: Number(req.params.id)});
+    res.send(result);
+  } catch {
+    res.send("Invalid ID").status(400);
+  }
+  // let collection = await db.collection("grades");
+  // let query = { learner_id: Number(req.params.id) };
 
-//   // Check for class_id parameter
-//   if (req.query.class) query.class_id = Number(req.query.class);
+  // // Check for class_id parameter
+  // if (req.query.class) query.class_id = Number(req.query.class);
 
-//   let result = await collection.find(query).toArray();
+  // let result = await collection.find(query).toArray();
 
-//   if (!result) res.send("Not found").status(404);
-//   else res.send(result).status(200);
-// });
+  // if (!result) res.send("Not found").status(404);
+  // else res.send(result).status(200);
+});
 
 // // Delete a learner's grade data
 // router.delete("/learner/:id", async (req, res) => {
