@@ -11,6 +11,8 @@ const gradesSchema = new mongoose.Schema({
         type: Number,
         required: true
     }
-}, {collection: 'grades'})
+}, 
+// linking pre-existing collection
+{collection: 'grades'})
 
 export default mongoose.model('Grade', gradesSchema)
