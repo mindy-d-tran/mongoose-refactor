@@ -16,11 +16,6 @@ router.post("/", async (req, res) => {
     class_id: req.body.class_id,
     learner_id: req.body.learner_id || req.body.student_id
   });
-  // // rename fields for backwards compatibility
-  // if (newDoc.student_id) {
-  //   newDoc.learner_id = newDoc.student_id;
-  //   delete newDoc.student_id;
-  // }
 
   let result = await newDoc.save();
   res.send(result).status(204);
@@ -38,15 +33,21 @@ router.post("/", async (req, res) => {
   // res.send(result).status(204);
 });
 
-// // Get a single grade entry
-// router.get("/:id", async (req, res) => {
-//   let collection = await db.collection("grades");
-//   let query = { _id: ObjectId(req.params.id) };
-//   let result = await collection.findOne(query);
+// Get a single grade entry
+router.get("/:id", async (req, res) => {
+  try {
+    let result = await Learner.findById(req.params.id);
+    res.send(result);
+  } catch {
+    res.send("Invalid ID").status(400);
+  }
+  // let collection = await db.collection("grades");
+  // let query = { _id: ObjectId(req.params.id) };
+  // let result = await collection.findOne(query);
 
-//   if (!result) res.send("Not found").status(404);
-//   else res.send(result).status(200);
-// });
+  // if (!result) res.send("Not found").status(404);
+  // else res.send(result).status(200);
+});
 
 // // Add a score to a grade entry
 // router.patch("/:id/add", async (req, res) => {
